@@ -1,0 +1,25 @@
+person,lumberjack
+person,teacher
+person,astronaut
+person,firefighter
+person,doctor
+place,Camelot
+place,Paris
+place,Mount Everest
+place,Great Wall of China
+place,Grand Canyon
+phrase,my hovercraft is full of eels
+phrase,a picture is worth a thousand words
+phrase,actions speak louder than words
+phrase,time heals all wounds
+phrase,curiosity killed the cat
+animal,giraffe
+animal,platypus
+animal,elephant
+animal,porcupine
+animal,meerkat
+food,pizza
+food,sushi
+food,cheeseburger
+food,spaghetti
+food,tacos

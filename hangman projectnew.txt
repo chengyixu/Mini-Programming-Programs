@@ -1,0 +1,182 @@
+HANGMAN Project
+
+A.	Problem Specifications
+
+a.	The input data file
+i.	The data file for this project contains a list of words or phrases along with their respective categories. These words or phrases will be used as the secret words for the Hangman game, and one will be chosen at random for each round.
+
+ii.	DATA example:
+person,lumberjack
+place,Camelot
+phrase,my hovercraft is full of eels
+animal,giraffe
+food,pizza
+
+iii.	No, not all data lines are treated in the same way. Each line consists of a category (e.g., person, place, phrase) and a secret word/phrase related to that category, separated by a comma. The program needs to differentiate between the category and the secret word/phrase for each line.
+
+iv.	The different parts of the file are distinguished from each other by separating the category and the secret word/phrase with a comma. When reading the file, the program should split each line using the comma as a delimiter, which will allow it to differentiate between the category and the secret word/phrase.
+
+v.	The entire file should be read at the beginning of the program. This allows the program to load all the words and categories into memory, from which it can choose one at random for each round of the game. If the file is small, loading it all at once will not be an issue, and it simplifies the process of selecting a new secret word/phrase for each round.
+
+b.	Keyboard interaction
+i.	The inputs expected from a user in this program are:
+1. The name of the data file containing the secret words/phrases and their categories.
+2. The user's letter guesses during the game.
+
+ii.	
+1.	For the data file input: The program will load the file, choose a random secret word/phrase, and display the corresponding category along with blanks representing each letter of the secret word/phrase.
+2.	For the letter guesses: The program will reveal the positions of the correctly guessed letters in the secret word/phrase, update the hangman ASCII art (if the guess is incorrect), and display the number of incorrect guesses remaining.
+
+iii.	The program stops running when the user either correctly guesses the entire secret word/phrase or runs out of incorrect guesses (i.e., the hangman is complete). Additionally, the program could be designed to ask the user if they want to play another round with a new word/phrase from the data file or exit the program.
+
+iv.	
+1.	Example 1:
+What file will the words come from? hangman.txt
+This one is looking for a place:
+_______
+What is your guess? C
+There are 1 c's
+c______
+What is your guess? A
+There are 2 a's
+ca__a__
+What is your guess? M
+There are 1 m's
+cama__t
+What is your guess? E
+There are 1 e's
+You've guessed the word: Camelot
+Would you like to play again? (yes/no): no
+
+2.	Example 2:
+What file will the words come from? hangman.txt
+This one is looking for a phrase:
+__ ___ ___ ___ ____
+What is your guess? T
+There are 3 t's
+_t _t_ ___ _t__
+What is your guess? H
+There are 1 h's
+_t _t_ ___ _th_
+What is your guess? E
+There are 2 e's
+_t _te ___ _the_
+What is your guess? P
+Incorrect guess (1 incorrect guess)
+_t _te ___ _the_
+What is your guess? O
+There are 1 o's
+_t _to ___ _the_
+What is your guess? A
+Incorrect guess (2 incorrect guesses)
+_t _to ___ _the_
+What is your guess? R
+Incorrect guess (3 incorrect guesses)
+_t _to ___ _the_
+What is your guess? I
+Incorrect guess (4 incorrect guesses)
+_t _to ___ _the_
+What is your guess? U
+Incorrect guess (5 incorrect guesses)
+_t _to ___ _the_
+What is your guess? S
+Incorrect guess (6 incorrect guesses)
+You've lost! The correct phrase was: At two in the night.
+Would you like to play again? (yes/no): yes
+
+
+B.	Problem Analysis
+a.	Yes, Python dictionary is helpful. 
+store categories as keys and lists of secret words/phrases related to those categories as values. This allow the program to easily choose a random category and then select a random word/phrase from the corresponding list. However, this is not the only possible solution and using a list (as explained below) might be more straightforward.
+
+b.	Yes, the Python list is helpful. 
+store each line (category and secret word/phrase) as a tuple in a list. Then, during the game, the program can choose a random tuple from the list, which will provide both the category and the secret word/phrase for the round. The list can also be used to store the user's correct and incorrect guesses, as well as the partially revealed secret word/phrase.
+
+c.	Yes, helpful
+i.	The random library: The random.choice() function can be used to select a random tuple (category and secret word/phrase) from the list created from the data file. Additionally, the random.shuffle() function could be used if the program were to implement a feature that allows the user to play through all the words/phrases in the file in a random order.
+ii.	The string library: The string.ascii_lowercase constant provides a list of all lowercase letters, which can be useful when validating the user's input or checking if a guessed letter is in the secret word/phrase.
+
+iii.	String methods: Various string methods, such as str.split(), str.lower(), and str.replace(), can be helpful when processing the input file, handling user guesses, and updating the partially revealed secret word/phrase.
+iv.	The os library: The os.path.isfile() function can be used to check if the provided data file exists before attempting to read its contents.
+
+
+
+C.	Data Structure Design
+a.	If a dictionary is used in this problem, the search key would be the category (e.g., "person", "place", "phrase", etc.). The associated data that would be retrieved is a list of secret words/phrases related to that category.
+
+b.	
+i.	A list to store tuples, where each tuple consists of a category and a secret word/phrase from the input file (e.g., [("person", "lumberjack"), ("place", "camelot"), ("phrase", "my hovercraft is full of eels")]).
+ii.	A list to store the user's correct guesses (e.g., ["a", "e", "s", "i"]).
+iii.	A list to store the user's incorrect guesses (e.g., ["z", "o"]).
+iv.	A list to represent the partially revealed secret word/phrase, with each element being either a letter (if correctly guessed) or an underscore (if not yet guessed) (e.g., ["A", "_", "a", "s", " "]).
+
+c.	The data structures will be created and filled in while the program is running:
+i.	The list of tuples containing categories and secret words/phrases will be initialized by reading the data from the input file.
+ii.	The lists for storing the user's correct and incorrect guesses will be initialized as empty lists and will be filled during the game as the user makes guesses.
+iii.	The list representing the partially revealed secret word/phrase will be initialized when a new game starts, using the chosen secret word/phrase, and will be updated during the game as the user makes correct guesses.
+
+
+D.	Functional Design
+a.	Function 1:
+i.	Name: read_data_file
+ii.	Summary: Reads the data file and creates a list of tuples with category and secret word/phrase pairs.
+iii.	Parameters:
+1.	file_name
+2.	String
+3.	No modification
+iv.	Return value: A list of tuples with category and secret word/phrase pairs.
+v.	Functions called: None
+
+b.	Function 2:
+i.	Name: select_random_entry
+ii.	Summary: Selects a random tuple (category and secret word/phrase) from the list.
+iii.	Parameters:
+1.	data_list
+2.	List of tuples
+3.	No modification
+iv.	Return value: A tuple containing a randomly chosen category and secret word/phrase.
+v.	Functions called: None
+
+c.	Function 3:
+i.	Name: initialize_partial_word
+ii.	Summary: Initializes the list representing the partially revealed secret word/phrase, with underscores for unguessed letters.
+iii.	Parameters:
+1.	secret_word
+2.	String
+3.	No modification
+iv.	Return value: A list representing the partially revealed secret word/phrase, with underscores for unguessed letters.
+v.	Functions called: None
+
+d.	Function 4:
+i.	Name: process_user_guess
+ii.	Summary: Processes the user's guess, updates the lists of correct and incorrect guesses, and updates the partially revealed secret word/phrase.
+iii.	Parameters:
+1.	guess
+2.	String
+3.	No modification
+4.	correct_guesses
+5.	List of strings
+6.	Modification
+7.	incorrect_guesses
+8.	List of strings
+9.	Modification
+10.	partial_word
+11.	List of strings/characters
+12.	Modification
+iv.	Return value: A tuple containing a boolean (True if the guess was correct, False otherwise) and a message string (providing feedback to the user).
+v.	Functions called: None
+
+e.	Function 5:
+i.	Name: play_round
+ii.	Summary: Plays one round of the Hangman game, using the provided category and secret word/phrase.
+iii.	Parameters:
+1.	category
+2.	String
+3.	No modification
+4.	secret_word
+5.	String
+6.	No modification
+iv.	Return value: None
+v.	Functions called: initialize_partial_word, process_user_guess
+
+
